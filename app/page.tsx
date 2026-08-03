@@ -1,6 +1,17 @@
 "use client";
 
-import { useState } from "react";
+import {
+  Briefcase,
+  Check,
+  Copy,
+  FileUser,
+  Pencil,
+  Sparkles,
+} from "lucide-react";
+import { useRef, useState } from "react";
+import { AutoGrowTextarea } from "./components/AutoGrowTextarea";
+import { Modal } from "./components/Modal";
+import { ScoreBar } from "./components/ScoreBar";
 
 type JobParserResult = {
   role: string;
@@ -40,6 +51,33 @@ function decodeBase64Header(value: string | null): unknown {
   return JSON.parse(new TextDecoder().decode(bytes));
 }
 
+function Spinner() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" className="h-4 w-4 animate-spin">
+      <circle
+        cx="12"
+        cy="12"
+        r="9"
+        stroke="currentColor"
+        strokeWidth="2.5"
+        className="opacity-25"
+      />
+      <path
+        d="M21 12a9 9 0 0 0-9-9"
+        stroke="currentColor"
+        strokeWidth="2.5"
+        strokeLinecap="round"
+      />
+    </svg>
+  );
+}
+
+const textareaStyle: React.CSSProperties = {
+  background: "var(--surface-1)",
+  borderColor: "var(--border-subtle)",
+  color: "var(--text-primary)",
+};
+
 export default function Home() {
   const [jobDescription, setJobDescription] = useState("");
   const [resumeText, setResumeText] = useState("");
@@ -48,6 +86,14 @@ export default function Home() {
   const [result, setResult] = useState<AnalysisResult | null>(null);
   const [coverLetter, setCoverLetter] = useState("");
   const [isStreaming, setIsStreaming] = useState(false);
+  const [modalOpen, setModalOpen] = useState(false);
+
+  const [isEditing, setIsEditing] = useState(false);
+  const [editedCoverLetter, setEditedCoverLetter] = useState("");
+  const [copied, setCopied] = useState(false);
+  const copyTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const displayedCoverLetter = isEditing ? editedCoverLetter : coverLetter;
 
   const canSubmit =
     jobDescription.trim().length > 0 && resumeText.trim().length > 0 && !loading;
@@ -57,6 +103,8 @@ export default function Home() {
     setError(null);
     setResult(null);
     setCoverLetter("");
+    setIsEditing(false);
+    setCopied(false);
 
     try {
       const response = await fetch("/api/analyze", {
@@ -83,6 +131,7 @@ export default function Home() {
       setResult({ jobParserRes, resumeParserRes, matchScore });
       setLoading(false);
       setIsStreaming(true);
+      setModalOpen(true);
 
       const reader = response.body.getReader();
       const decoder = new TextDecoder();
@@ -100,156 +149,340 @@ export default function Home() {
     }
   }
 
+  function handleStartEdit() {
+    setEditedCoverLetter(coverLetter);
+    setIsEditing(true);
+  }
+
+  function handleSaveEdit() {
+    setCoverLetter(editedCoverLetter);
+    setIsEditing(false);
+  }
+
+  async function handleCopy() {
+    await navigator.clipboard.writeText(displayedCoverLetter);
+    setCopied(true);
+    if (copyTimeoutRef.current) clearTimeout(copyTimeoutRef.current);
+    copyTimeoutRef.current = setTimeout(() => setCopied(false), 1500);
+  }
+
   return (
-    <div className="flex flex-1 flex-col items-center bg-zinc-50 px-6 py-12 dark:bg-black">
-      <div className="flex w-full max-w-4xl flex-col gap-8">
-        <header className="flex flex-col gap-2">
-          <h1 className="text-2xl font-semibold tracking-tight text-black dark:text-zinc-50">
+    <div
+      className="flex flex-1 flex-col items-center px-4 py-10 sm:px-6 sm:py-20"
+      style={{ background: "var(--surface-0)" }}
+    >
+      <div className="flex w-full max-w-4xl flex-col gap-10">
+        <header className="flex flex-col items-center gap-3 text-center">
+
+          <h1
+            className="text-3xl font-semibold tracking-tight text-balance sm:text-4xl"
+            style={{ color: "var(--text-primary)" }}
+          >
             Job Application Intelligence Pipeline
           </h1>
-          <p className="text-sm text-zinc-600 dark:text-zinc-400">
+          <p
+            className="max-w-lg text-base leading-relaxed"
+            style={{ color: "var(--text-secondary)" }}
+          >
             Paste a job description and a resume to get a skill-gap analysis, a
             culture-fit score, and a tailored cover letter.
           </p>
         </header>
 
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-          <label className="flex flex-col gap-2">
-            <span className="text-sm font-medium text-zinc-800 dark:text-zinc-200">
+        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
+          <label className="flex flex-col gap-2.5">
+            <span
+              className="flex items-center gap-1.5 text-sm font-medium"
+              style={{ color: "var(--text-primary)" }}
+            >
+              <Briefcase size={15} strokeWidth={1.75} />
               Job description
             </span>
-            <textarea
+            <AutoGrowTextarea
               value={jobDescription}
-              onChange={(e) => setJobDescription(e.target.value)}
-              placeholder="Paste the job description here..."
-              rows={12}
-              className="w-full resize-y rounded-lg border border-zinc-300 bg-white p-3 text-sm text-black outline-none focus:border-zinc-500 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-50"
+              onChange={setJobDescription}
+              placeholder="Drop in the role's job posting...."
             />
           </label>
 
-          <label className="flex flex-col gap-2">
-            <span className="text-sm font-medium text-zinc-800 dark:text-zinc-200">
+          <label className="flex flex-col gap-2.5">
+            <span
+              className="flex items-center gap-1.5 text-sm font-medium"
+              style={{ color: "var(--text-primary)" }}
+            >
+              <FileUser size={15} strokeWidth={1.75} />
               Resume
             </span>
-            <textarea
+            <AutoGrowTextarea
               value={resumeText}
-              onChange={(e) => setResumeText(e.target.value)}
-              placeholder="Paste the resume text here..."
-              rows={12}
-              className="w-full resize-y rounded-lg border border-zinc-300 bg-white p-3 text-sm text-black outline-none focus:border-zinc-500 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-50"
+              onChange={setResumeText}
+              placeholder="Paste in the candidate's resume...."
+
             />
           </label>
         </div>
 
-        <div>
+        <div className="flex items-center gap-4">
           <button
             onClick={handleAnalyze}
             disabled={!canSubmit}
-            className="rounded-full bg-black px-6 py-2.5 text-sm font-medium text-white transition-colors hover:bg-zinc-800 disabled:cursor-not-allowed disabled:opacity-40 dark:bg-white dark:text-black dark:hover:bg-zinc-200"
+            className="flex items-center gap-2 rounded-full px-7 py-3 text-sm font-medium text-white shadow-md transition-all disabled:cursor-not-allowed disabled:opacity-40"
+            style={{
+              background: canSubmit
+                ? "linear-gradient(135deg, var(--accent), var(--accent-hover))"
+                : "var(--text-tertiary)",
+              boxShadow: canSubmit ? "0 8px 24px -8px var(--accent)" : "none",
+            }}
           >
+            {loading ? <Spinner /> : <Sparkles size={16} strokeWidth={2} />}
             {loading ? "Analyzing..." : "Analyze"}
           </button>
+          {result && !modalOpen && (
+            <button
+              onClick={() => setModalOpen(true)}
+              className="text-sm font-medium underline-offset-4 hover:underline"
+              style={{ color: "var(--text-secondary)" }}
+            >
+              View last results
+            </button>
+          )}
         </div>
 
         {error && (
-          <div className="rounded-lg border border-red-300 bg-red-50 p-4 text-sm text-red-800 dark:border-red-900 dark:bg-red-950 dark:text-red-200">
+          <div
+            className="rounded-xl border p-4 text-sm leading-relaxed"
+            style={{
+              background: "rgba(226, 96, 79, 0.08)",
+              borderColor: "rgba(226, 96, 79, 0.25)",
+              color: "#d3503e",
+            }}
+          >
             {error}
           </div>
         )}
+      </div>
 
-        {(result || isStreaming || coverLetter) && (
-          <section className="flex flex-col gap-6 rounded-xl border border-zinc-200 bg-white p-6 dark:border-zinc-800 dark:bg-zinc-950">
+      <Modal open={modalOpen} onClose={() => setModalOpen(false)}>
+        <div className="flex flex-col gap-8 p-5 sm:gap-10 sm:p-10">
+          <div className="flex flex-col gap-1">
+            <span
+              className="flex items-center gap-1.5 text-s font-semibold tracking-wide uppercase"
+              style={{ color: "var(--accent-soft-text)" }}
+            >
+              <Sparkles size={18} strokeWidth={2} />
+              Analysis results
+            </span>
             {result && (
-              <>
-                <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
-                  <div className="flex flex-col gap-2">
-                    <h2 className="text-sm font-semibold text-zinc-900 dark:text-zinc-100">
-                      Job parser
-                    </h2>
-                    <dl className="flex flex-col gap-1 text-sm text-zinc-700 dark:text-zinc-300">
-                      <div>
-                        <dt className="inline font-medium">Role: </dt>
-                        <dd className="inline">{result.jobParserRes.role}</dd>
-                      </div>
-                      <div>
-                        <dt className="inline font-medium">Company: </dt>
-                        <dd className="inline">{result.jobParserRes.company}</dd>
-                      </div>
-                      <div>
-                        <dt className="inline font-medium">Salary range: </dt>
-                        <dd className="inline">{result.jobParserRes.salaryRange}</dd>
-                      </div>
-                      <div>
-                        <dt className="inline font-medium">Remote policy: </dt>
-                        <dd className="inline">{result.jobParserRes.remotePolicy}</dd>
-                      </div>
-                      <div>
-                        <dt className="font-medium">Required skills:</dt>
-                        <dd>{result.jobParserRes.requiredSkills.join(", ")}</dd>
-                      </div>
-                      <div>
-                        <dt className="font-medium">Nice to have:</dt>
-                        <dd>{result.jobParserRes.niceToHave.join(", ")}</dd>
-                      </div>
-                    </dl>
-                  </div>
-
-                  <div className="flex flex-col gap-2">
-                    <h2 className="text-sm font-semibold text-zinc-900 dark:text-zinc-100">
-                      Resume parser
-                    </h2>
-                    <dl className="flex flex-col gap-1 text-sm text-zinc-700 dark:text-zinc-300">
-                      <div>
-                        <dt className="font-medium">Skills:</dt>
-                        <dd>{result.resumeParserRes.skills.join(", ")}</dd>
-                      </div>
-                      <div>
-                        <dt className="font-medium">Experience:</dt>
-                        <dd>{result.resumeParserRes.experience.join("; ")}</dd>
-                      </div>
-                      <div>
-                        <dt className="font-medium">Education:</dt>
-                        <dd>{result.resumeParserRes.education.join("; ")}</dd>
-                      </div>
-                    </dl>
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
-                  <div className="flex flex-col gap-2 rounded-lg border border-zinc-200 p-4 dark:border-zinc-800">
-                    <h3 className="text-sm font-semibold text-zinc-900 dark:text-zinc-100">
-                      Skill gap score: {result.matchScore.skillGapScore.score}/10
-                    </h3>
-                    <p className="text-sm text-zinc-600 dark:text-zinc-400">
-                      {result.matchScore.skillGapScore.reasoning}
-                    </p>
-                  </div>
-                  <div className="flex flex-col gap-2 rounded-lg border border-zinc-200 p-4 dark:border-zinc-800">
-                    <h3 className="text-sm font-semibold text-zinc-900 dark:text-zinc-100">
-                      Culture fit score: {result.matchScore.cultureFitScore.score}/10
-                    </h3>
-                    <p className="text-sm text-zinc-600 dark:text-zinc-400">
-                      {result.matchScore.cultureFitScore.reasoning}
-                    </p>
-                  </div>
-                </div>
-              </>
-            )}
-
-            <div className="flex flex-col gap-2">
-              <h2 className="text-sm font-semibold text-zinc-900 dark:text-zinc-100">
-                Cover letter {isStreaming && "(streaming...)"}
+              <h2
+                className="text-xl font-semibold tracking-tight"
+                style={{ color: "var(--text-primary)" }}
+              >
+                {result.jobParserRes.role} at {result.jobParserRes.company}
               </h2>
-              <div className="whitespace-pre-wrap rounded-lg bg-zinc-50 p-4 text-sm leading-relaxed text-zinc-800 dark:bg-zinc-900 dark:text-zinc-200">
-                {coverLetter}
+            )}
+          </div>
+
+          {result && (
+            <>
+              <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
+                <div
+                  className="flex flex-col gap-3 rounded-xl p-5"
+                  style={{
+                    background: "var(--surface-2-tint)",
+                    border: "1px solid var(--border-subtle)",
+                  }}
+                >
+                  <h3
+                    className="flex items-center gap-1.5 text-xs font-semibold tracking-wide uppercase"
+                    style={{ color: "var(--text-tertiary)" }}
+                  >
+                    <Briefcase size={14} strokeWidth={1.75} />
+                    Job parser
+                  </h3>
+                  <dl
+                    className="flex flex-col gap-2 text-sm leading-relaxed"
+                    style={{ color: "var(--text-secondary)" }}
+                  >
+                    <div className="flex flex-wrap gap-x-1.5">
+                      <dt
+                        className="shrink-0 font-medium"
+                        style={{ color: "var(--text-primary)" }}
+                      >
+                        Role:
+                      </dt>
+                      <dd>{result.jobParserRes.role}</dd>
+                    </div>
+                    <div className="flex flex-wrap gap-x-1.5">
+                      <dt
+                        className="shrink-0 font-medium"
+                        style={{ color: "var(--text-primary)" }}
+                      >
+                        Company:
+                      </dt>
+                      <dd>{result.jobParserRes.company}</dd>
+                    </div>
+                    <div className="flex flex-wrap gap-x-1.5">
+                      <dt
+                        className="shrink-0 font-medium"
+                        style={{ color: "var(--text-primary)" }}
+                      >
+                        Salary range:
+                      </dt>
+                      <dd>{result.jobParserRes.salaryRange}</dd>
+                    </div>
+                    <div className="flex flex-wrap gap-x-1.5">
+                      <dt
+                        className="shrink-0 font-medium"
+                        style={{ color: "var(--text-primary)" }}
+                      >
+                        Remote policy:
+                      </dt>
+                      <dd>{result.jobParserRes.remotePolicy}</dd>
+                    </div>
+                    <div>
+                      <dt className="font-medium" style={{ color: "var(--text-primary)" }}>
+                        Required skills:
+                      </dt>
+                      <dd>{result.jobParserRes.requiredSkills.join(", ")}</dd>
+                    </div>
+                    <div>
+                      <dt className="font-medium" style={{ color: "var(--text-primary)" }}>
+                        Nice to have:
+                      </dt>
+                      <dd>{result.jobParserRes.niceToHave.join(", ")}</dd>
+                    </div>
+                  </dl>
+                </div>
+
+                <div
+                  className="flex flex-col gap-3 rounded-xl p-5"
+                  style={{
+                    background: "var(--surface-2-tint)",
+                    border: "1px solid var(--border-subtle)",
+                  }}
+                >
+                  <h3
+                    className="flex items-center gap-1.5 text-xs font-semibold tracking-wide uppercase"
+                    style={{ color: "var(--text-tertiary)" }}
+                  >
+                    <FileUser size={14} strokeWidth={1.75} />
+                    Resume parser
+                  </h3>
+                  <dl
+                    className="flex flex-col gap-2 text-sm leading-relaxed"
+                    style={{ color: "var(--text-secondary)" }}
+                  >
+                    <div>
+                      <dt className="font-medium" style={{ color: "var(--text-primary)" }}>
+                        Skills:
+                      </dt>
+                      <dd>{result.resumeParserRes.skills.join(", ")}</dd>
+                    </div>
+                    <div>
+                      <dt className="font-medium" style={{ color: "var(--text-primary)" }}>
+                        Experience:
+                      </dt>
+                      <dd>{result.resumeParserRes.experience.join("; ")}</dd>
+                    </div>
+                    <div>
+                      <dt className="font-medium" style={{ color: "var(--text-primary)" }}>
+                        Education:
+                      </dt>
+                      <dd>{result.resumeParserRes.education.join("; ")}</dd>
+                    </div>
+                  </dl>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
+                <ScoreBar
+                  label="Skill gap score"
+                  score={result.matchScore.skillGapScore.score}
+                  reasoning={result.matchScore.skillGapScore.reasoning}
+                />
+                <ScoreBar
+                  label="Culture fit score"
+                  score={result.matchScore.cultureFitScore.score}
+                  reasoning={result.matchScore.cultureFitScore.reasoning}
+                />
+              </div>
+            </>
+          )}
+
+          <div className="flex flex-col gap-4">
+            <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-2">
+              <h3
+                className="flex items-center gap-1.5 text-xs font-semibold tracking-wide uppercase"
+
+              >
+                Cover letter
                 {isStreaming && (
-                  <span className="ml-0.5 inline-block h-4 w-2 animate-pulse bg-zinc-500 align-middle" />
+                  <span style={{ color: "var(--accent-soft-text)" }}>· streaming</span>
+                )}
+              </h3>
+              <div className="flex items-center gap-4 sm:gap-5">
+                <button
+                  onClick={handleCopy}
+                  disabled={isStreaming || !coverLetter}
+                  className="flex items-center gap-1.5 text-sm font-medium transition-colors disabled:cursor-not-allowed disabled:opacity-40 cursor-pointer opacity-70 hover:opacity-100"
+                  style={{ color: copied ? "#2f9e6c" : "var(--text-secondary)" }}
+                >
+                  {copied ? (
+                    <Check size={14} strokeWidth={2} />
+                  ) : (
+                    <Copy size={14} strokeWidth={1.75} />
+                  )}
+                  {copied ? "Copied!" : "Copy"}
+                </button>
+                {isEditing ? (
+                  <button
+                    onClick={handleSaveEdit}
+                    className="flex items-center gap-1.5 text-sm font-medium transition-colors cursor-pointer opacity-70 hover:opacity-100"
+                    style={{ color: "var(--accent-soft-text)" }}
+                  >
+                    <Check size={14} strokeWidth={2} />
+                    Done
+                  </button>
+                ) : (
+                  <button
+                    onClick={handleStartEdit}
+                    disabled={isStreaming || !coverLetter}
+                    className="flex items-center gap-1.5 text-sm font-medium transition-colors disabled:cursor-not-allowed disabled:opacity-40 cursor-pointer opacity-70 hover:opacity-100"
+                    style={{ color: "var(--text-secondary)" }}
+                  >
+                    <Pencil size={14} strokeWidth={1.75} />
+                    Edit
+                  </button>
                 )}
               </div>
             </div>
-          </section>
-        )}
-      </div>
+
+            {isEditing ? (
+              <textarea
+                value={editedCoverLetter}
+                onChange={(e) => setEditedCoverLetter(e.target.value)}
+                rows={14}
+                autoFocus
+                style={textareaStyle}
+                className="custom-scroll focus-glow w-full resize-y rounded-xl border p-5 text-sm leading-relaxed outline-none transition-shadow"
+              />
+            ) : (
+              <div
+                className="rounded-xl p-5 text-sm leading-relaxed whitespace-pre-wrap"
+                style={{ background: "var(--surface-2-tint)", color: "var(--text-secondary)" }}
+              >
+                {coverLetter}
+                {isStreaming && (
+                  <span
+                    className="ml-0.5 inline-block h-4 w-2 animate-pulse align-middle"
+                    style={{ background: "var(--accent)" }}
+                  />
+                )}
+              </div>
+            )}
+          </div>
+        </div>
+      </Modal>
     </div>
   );
 }

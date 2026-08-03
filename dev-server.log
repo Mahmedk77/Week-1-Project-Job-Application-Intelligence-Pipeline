@@ -1,0 +1,335 @@
+
+> ai-automation-roadmap@0.1.0 dev
+> next dev
+
+▲ Next.js 16.2.12 (Turbopack)
+- Local:         http://localhost:3000
+- Network:       http://10.202.42.0:3000
+- Environments: .env.local
+✓ Ready in 530ms
+
+ GET / 200 in 733ms (next.js: 338ms, application-code: 395ms)
+Error:  Error: 400 Generated JSON does not match the expected schema. Please adjust your prompt. See 'failed_generation' for more details. Error: jsonschema: '' does not validate with /required: missing properties: 'role', 'company', 'requiredSkills', 'niceToHave', 'salaryRange', 'remotePolicy'
+ POST /api/analyze 500 in 1962ms (next.js: 238ms, application-code: 1724ms)
+Job Parser:  {
+  role: 'Software Engineer',
+  company: 'Acme Corp.',
+  requiredSkills: [ 'TypeScript', 'Node.js', 'PostgreSQL' ],
+  niceToHave: [ 'AWS', 'Docker' ],
+  salaryRange: '$110,000 - $140,000',
+  remotePolicy: 'remote'
+}
+Resume Parser:  {
+  skills: [ 'TypeScript', 'Node.js', 'React', 'Python' ],
+  experience: [
+    'Backend Engineer at Startup Inc (2021-2024), building REST APIs with Node.js and PostgreSQL.'
+  ],
+  education: [ 'B.S. Computer Science, State University.' ]
+}
+Match Score {
+  skillGapScore: {
+    score: 6,
+    reasoning: 'Candidate has TypeScript and Node.js skills and experience with PostgreSQL, but PostgreSQL is not explicitly listed as a skill and the candidate lacks both AWS and Docker, leading to a moderate match score.'
+  },
+  cultureFitScore: {
+    score: 9,
+    reasoning: 'Candidate has strong match to required skills (TypeScript, Node.js, PostgreSQL) and relevant experience building REST APIs. Lacks AWS/Docker nice‑to‑have, but overall fit is high.'
+  }
+}
+ POST /api/analyze 200 in 4.6s (next.js: 2ms, application-code: 4.6s)
+Streaming error: ResponseAborted: 
+    at ignore-listed frames
+TypeError: Invalid state: WritableStream is closed
+    at <unknown> (app\api\analyze\route.ts:129:30)
+  127 |                 console.error("Streaming error:", streamError);
+  128 |             } finally {
+> 129 |                 await writer.close();
+      |                              ^
+  130 |             }
+  131 |
+  132 |         })(); {
+  code: 'ERR_INVALID_STATE'
+}
+⨯ unhandledRejection: TypeError: Invalid state: WritableStream is closed
+    at <unknown> (app\api\analyze\route.ts:129:30)
+  127 |                 console.error("Streaming error:", streamError);
+  128 |             } finally {
+> 129 |                 await writer.close();
+      |                              ^
+  130 |             }
+  131 |
+  132 |         })(); {
+  code: 'ERR_INVALID_STATE'
+}
+⨯ unhandledRejection:  TypeError: Invalid state: WritableStream is closed
+    at <unknown> (app\api\analyze\route.ts:129:30)
+  127 |                 console.error("Streaming error:", streamError);
+  128 |             } finally {
+> 129 |                 await writer.close();
+      |                              ^
+  130 |             }
+  131 |
+  132 |         })(); {
+  code: 'ERR_INVALID_STATE'
+}
+ GET / 200 in 281ms (next.js: 108ms, application-code: 174ms)
+ GET / 200 in 44ms (next.js: 4ms, application-code: 40ms)
+Job Parser:  {
+  role: 'Frontend Developer',
+  company: 'Nova Systems',
+  requiredSkills: [ 'React', 'TypeScript', 'CSS/Tailwind' ],
+  niceToHave: [ 'Next.js', 'GraphQL' ],
+  salaryRange: '$60,000-$85,000',
+  remotePolicy: 'hybrid'
+}
+Resume Parser:  {
+  skills: [ 'React', 'JavaScript', 'Tailwind CSS', 'Redux' ],
+  experience: [
+    '3 years experience as a frontend developer',
+    'Worked at PixelWorks as Frontend Developer 2021-2024'
+  ],
+  education: [ 'BS Software Engineering, ABC University' ]
+}
+Match Score {
+  skillGapScore: {
+    score: 7,
+    reasoning: 'The candidate has React and Tailwind CSS which satisfy the core requirements of the job; however, they lack TypeScript—a mandatory skill—and do not have experience with Next.js or GraphQL, which are considered nice-to-haves. With 2 out of 3 core skills matched, the overall fit is solid but not perfect.'
+  },
+  cultureFitScore: {
+    score: 7,
+    reasoning: 'Candidate demonstrates solid React and Tailwind CSS experience with 3 years in frontend development, aligning with the core requirements. However, they lack TypeScript proficiency and the optional Next.js/GraphQL skills, slightly reducing fit. Overall, a strong candidate with minor gaps.'
+  }
+}
+ POST /api/analyze 200 in 4.4s (next.js: 311ms, application-code: 4.1s)
+✓ Compiled in 195ms
+✓ Compiled in 139ms
+✓ Compiled in 148ms
+ GET / 200 in 173ms (next.js: 86ms, application-code: 87ms)
+ GET / 200 in 47ms (next.js: 5ms, application-code: 42ms)
+✓ Compiled in 63ms
+ GET / 200 in 163ms (next.js: 93ms, application-code: 70ms)
+✓ Compiled in 91ms
+ GET / 200 in 187ms (next.js: 93ms, application-code: 94ms)
+ GET / 200 in 41ms (next.js: 6ms, application-code: 35ms)
+✓ Compiled in 47ms
+ GET / 200 in 151ms (next.js: 6ms, application-code: 145ms)
+ GET / 200 in 53ms (next.js: 4ms, application-code: 49ms)
+ GET / 200 in 59ms (next.js: 5ms, application-code: 54ms)
+Job Parser:  {
+  role: 'Software Engineer',
+  company: 'Acme Corp',
+  requiredSkills: [ 'TypeScript', 'Node.js', 'PostgreSQL' ],
+  niceToHave: [ 'AWS', 'Docker' ],
+  salaryRange: '$110,000 - $140,000',
+  remotePolicy: 'remote'
+}
+Resume Parser:  {
+  skills: [ 'TypeScript', 'Node.js', 'React', 'Python' ],
+  experience: [
+    'Backend Engineer at Startup Inc (2021-2024), building REST APIs with Node.js and PostgreSQL.'
+  ],
+  education: [ 'B.S. Computer Science, State University.' ]
+}
+Match Score {
+  skillGapScore: {
+    score: 9,
+    reasoning: 'The candidate’s skill set includes TypeScript, Node.js, and has practical experience with PostgreSQL, covering all required skills. They also have React and Python, which add value but are not required. They lack the nice-to-have AWS and Docker experience. Overall, the candidate matches the core requirements well, so the fit is high.'
+  },
+  cultureFitScore: {
+    score: 9,
+    reasoning: 'Candidate meets all required skills (TypeScript, Node.js, PostgreSQL) and has recent backend experience. They lack AWS/Docker but that’s a nice‑to‑have. Remote fit is good. Overall fit is strong.'
+  }
+}
+ POST /api/analyze 200 in 4.8s (next.js: 290ms, application-code: 4.5s)
+Job Parser:  {
+  role: 'Frontend Developer',
+  company: 'Nova Systems',
+  requiredSkills: [ 'React', 'TypeScript', 'CSS/Tailwind' ],
+  niceToHave: [ 'Next.js', 'GraphQL' ],
+  salaryRange: '$60,000-$85,000',
+  remotePolicy: 'hybrid'
+}
+Resume Parser:  {
+  skills: [ 'React', 'JavaScript', 'Tailwind CSS', 'Redux' ],
+  experience: [ 'Worked at PixelWorks as Frontend Developer 2021-2024.' ],
+  education: [ 'BS Software Engineering, ABC University.' ]
+}
+Match Score {
+  skillGapScore: {
+    score: 5,
+    reasoning: 'The candidate meets 2 out of 3 core requirements (React and Tailwind CSS) but lacks TypeScript, which is a critical skill for the role. Additionally, the candidate does not have experience with the optional Next.js and GraphQL technologies. Overall, the skill fit is moderate.'
+  },
+  cultureFitScore: {
+    score: 6,
+    reasoning: 'Candidate demonstrates core required skills—React and Tailwind CSS—along with solid JavaScript experience and a 3‑year frontend role. The missing TypeScript proficiency and absence of Next.js/GraphQL knowledge slightly reduce fit, but overall alignment is good for a hybrid front‑end position at Nova Systems.'
+  }
+}
+ POST /api/analyze 200 in 8.1s (next.js: 4ms, application-code: 8.1s)
+✓ Compiled in 39ms
+ GET / 200 in 102ms (next.js: 66ms, application-code: 37ms)
+✓ Compiled in 36ms
+ GET / 200 in 87ms (next.js: 52ms, application-code: 36ms)
+✓ Compiled in 29ms
+ GET / 200 in 83ms (next.js: 49ms, application-code: 35ms)
+✓ Compiled in 39ms
+ GET / 200 in 76ms (next.js: 50ms, application-code: 25ms)
+✓ Compiled in 24ms
+ GET / 200 in 98ms (next.js: 70ms, application-code: 29ms)
+✓ Compiled in 23ms
+ GET / 200 in 87ms (next.js: 54ms, application-code: 32ms)
+✓ Compiled in 20ms
+ GET / 200 in 77ms (next.js: 50ms, application-code: 27ms)
+✓ Compiled in 36ms
+ GET / 200 in 93ms (next.js: 67ms, application-code: 26ms)
+✓ Compiled in 26ms
+ GET / 200 in 136ms (next.js: 96ms, application-code: 40ms)
+✓ Compiled in 21ms
+ GET / 200 in 85ms (next.js: 60ms, application-code: 25ms)
+✓ Compiled in 25ms
+ GET / 200 in 78ms (next.js: 50ms, application-code: 28ms)
+✓ Compiled in 28ms
+ GET / 200 in 82ms (next.js: 53ms, application-code: 29ms)
+✓ Compiled in 22ms
+ GET / 200 in 87ms (next.js: 61ms, application-code: 27ms)
+✓ Compiled in 25ms
+ GET / 200 in 77ms (next.js: 50ms, application-code: 27ms)
+✓ Compiled in 19ms
+ GET / 200 in 80ms (next.js: 55ms, application-code: 25ms)
+✓ Compiled in 26ms
+ GET / 200 in 82ms (next.js: 54ms, application-code: 28ms)
+✓ Compiled in 24ms
+ GET / 200 in 123ms (next.js: 75ms, application-code: 48ms)
+✓ Compiled in 29ms
+ GET / 200 in 72ms (next.js: 49ms, application-code: 23ms)
+ GET / 200 in 118ms (next.js: 4ms, application-code: 114ms)
+Job Parser:  {
+  role: 'Frontend Developer',
+  company: 'Nova Systems',
+  requiredSkills: [ 'React', 'TypeScript', 'CSS/Tailwind' ],
+  niceToHave: [ 'Next.js', 'GraphQL' ],
+  salaryRange: '$60,000-$85,000',
+  remotePolicy: 'hybrid'
+}
+Resume Parser:  {
+  skills: [ 'React', 'JavaScript', 'Tailwind CSS', 'Redux' ],
+  experience: [ 'PixelWorks Frontend Developer 2021-2024' ],
+  education: [ 'BS Software Engineering, ABC University' ]
+}
+Match Score {
+  skillGapScore: {
+    score: 7,
+    reasoning: 'Candidate matches two of three required skills (React and Tailwind CSS), but lacks TypeScript. Overall fit moderate, score 7'
+  },
+  cultureFitScore: {
+    score: 7,
+    reasoning: 'Candidate has React and Tailwind expertise but lacks TypeScript and next.js, yielding moderate alignment with role expectations.'
+  }
+}
+ POST /api/analyze 200 in 7.7s (next.js: 317ms, application-code: 7.3s)
+✓ Compiled in 102ms
+✓ Compiled in 119ms
+ GET / 200 in 399ms (next.js: 253ms, application-code: 146ms)
+✓ Compiled in 240ms
+ GET / 200 in 663ms (next.js: 327ms, application-code: 336ms)
+ GET / 200 in 143ms (next.js: 28ms, application-code: 115ms)
+✓ Compiled in 3.6s
+ GET / 200 in 1091ms (next.js: 418ms, application-code: 674ms)
+ GET / 200 in 256ms (next.js: 154ms, application-code: 102ms)
+ GET / 200 in 759ms (next.js: 365ms, application-code: 394ms)
+ GET / 200 in 790ms (next.js: 13ms, application-code: 776ms)
+✓ Compiled in 955ms
+✓ Compiled in 426ms
+ GET / 200 in 146ms (next.js: 11ms, application-code: 135ms)
+ GET / 200 in 143ms (next.js: 9ms, application-code: 133ms)
+Job Parser:  {
+  role: 'Software Engineer',
+  company: 'Acme Corp.',
+  requiredSkills: [ 'TypeScript', 'Node.js', 'PostgreSQL' ],
+  niceToHave: [ 'AWS', 'Docker' ],
+  salaryRange: '$110,000 - $140,000',
+  remotePolicy: 'remote'
+}
+Resume Parser:  {
+  skills: [ 'TypeScript', 'Node.js', 'React', 'Python' ],
+  experience: [
+    'Backend Engineer at Startup Inc (2021-2024), building REST APIs with Node.js and PostgreSQL.'
+  ],
+  education: [ 'B.S. Computer Science, State University.' ]
+}
+Match Score {
+  skillGapScore: {
+    score: 9,
+    reasoning: 'The candidate’s skill set includes TypeScript, Node.js, and PostgreSQL, which are all required for the role. They also have relevant backend experience building REST APIs using those technologies. The missing skills are AWS and Docker, listed as nice-to-have, so the candidate meets all core requirements and has a very close fit.'
+  },
+  cultureFitScore: {
+    score: 8,
+    reasoning: 'Candidate meets all required skills (TypeScript, Node.js, PostgreSQL) and has relevant experience building REST APIs with those technologies. While missing AWS/Docker, the strong backend background and remote work alignment suggest a good cultural fit. Score reflects strong match with a few missing nice-to-have skills.'
+  }
+}
+ POST /api/analyze 200 in 6.7s (next.js: 971ms, application-code: 5.7s)
+Job Parser:  {
+  role: 'Frontend Developer',
+  company: 'Nova Systems',
+  requiredSkills: [ 'React', 'TypeScript', 'CSS/Tailwind' ],
+  niceToHave: [ 'Next.js', 'GraphQL' ],
+  salaryRange: '$60,000-$85,000',
+  remotePolicy: 'hybrid'
+}
+Resume Parser:  {
+  skills: [ 'React', 'JavaScript', 'Tailwind CSS', 'Redux' ],
+  experience: [ 'Frontend Developer at PixelWorks 2021-2024' ],
+  education: [ 'BS Software Engineering, ABC University' ]
+}
+Match Score {
+  skillGapScore: {
+    score: 7,
+    reasoning: 'Candidate has React, Tailwind CSS, and JavaScript experience, covering most of the required skills. However, the job explicitly requires TypeScript, which the candidate lacks, and while they have Redux, they do not have the nice-to-have skills like Next.js or GraphQL. This results in a moderate skill gap, reflected in a score of 7/10.'
+  },
+  cultureFitScore: {
+    score: 6,
+    reasoning: 'The candidate meets many core requirements (React, Tailwind CSS) and has relevant experience, but lacks TypeScript and other nice-to-have skills. Overall fit is good but not perfect.'
+  }
+}
+ POST /api/analyze 200 in 5.2s (next.js: 14ms, application-code: 5.2s)
+✓ Compiled in 117ms
+ GET / 200 in 541ms (next.js: 344ms, application-code: 197ms)
+✓ Compiled in 94ms
+ GET / 200 in 405ms (next.js: 266ms, application-code: 140ms)
+Job Parser:  {
+  role: 'Frontend Developer',
+  company: 'Nova Systems',
+  requiredSkills: [ 'React', 'TypeScript', 'CSS/Tailwind' ],
+  niceToHave: [ 'Next.js', 'GraphQL' ],
+  salaryRange: '$60,000-$85,000',
+  remotePolicy: 'hybrid'
+}
+Resume Parser:  {
+  skills: [ 'React, JavaScript, Tailwind CSS, Redux' ],
+  experience: [ 'Worked at PixelWorks as Frontend Developer 2021-2024' ],
+  education: [ 'BS Software Engineering, ABC University' ]
+}
+Match Score {
+  skillGapScore: {
+    score: 7,
+    reasoning: 'Candidate possesses React and Tailwind CSS but does not have TypeScript, a required skill. No experience with Next.js or GraphQL, which are nice to have. Thus, the overall fit is moderate with a score of 7 out of 10.'
+  },
+  cultureFitScore: {
+    score: 6,
+    reasoning: 'The candidate has solid React and Tailwind experience, but missing TypeScript and next‑generation tools like Next.js or GraphQL. They have a single recent role and a standard education, which may fit the hybrid environment but lacks broader cultural signals. A moderate fit, score 6.'
+  }
+}
+ POST /api/analyze 200 in 6.0s (next.js: 960ms, application-code: 5.1s)
+✓ Compiled in 90ms
+ GET / 200 in 279ms (next.js: 149ms, application-code: 130ms)
+✓ Compiled in 75ms
+ GET / 200 in 216ms (next.js: 143ms, application-code: 72ms)
+✓ Compiled in 58ms
+ GET / 200 in 164ms (next.js: 108ms, application-code: 56ms)
+✓ Compiled in 150ms
+ GET / 200 in 395ms (next.js: 254ms, application-code: 141ms)
+✓ Compiled in 178ms
+ GET / 200 in 376ms (next.js: 242ms, application-code: 134ms)
+✓ Compiled in 102ms
+ GET / 200 in 410ms (next.js: 208ms, application-code: 202ms)
+✓ Compiled in 92ms
+ GET / 200 in 221ms (next.js: 156ms, application-code: 64ms)

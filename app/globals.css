@@ -1,26 +1,119 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #f7f7f9;
+  --foreground: #16151a;
+
+  /* Elevation tiers: page < modal < card, each a distinct step */
+  --surface-0: #f7f7f9;
+  --surface-1: #ffffff;
+  --surface-2: #ffffff;
+  --surface-2-tint: #faf9fc;
+  --border-subtle: #e6e5eb;
+  --border-strong: #d7d5e0;
+
+  --text-primary: #16151a;
+  --text-secondary: #5c5a68;
+  --text-tertiary: #918f9c;
+
+  --accent: #6d5ef8;
+  --accent-hover: #5c4de6;
+  --accent-soft: #f1eefe;
+  --accent-soft-text: #5a45e0;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
+  --font-sans: var(--font-poppins);
   --font-mono: var(--font-geist-mono);
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background: #0b0b10;
+    --foreground: #ececf1;
+
+    --surface-0: #0b0b10;
+    --surface-1: #131218;
+    --surface-2: #1a1920;
+    --surface-2-tint: #1e1d26;
+    --border-subtle: #24232c;
+    --border-strong: #322f3d;
+
+    --text-primary: #f2f1f6;
+    --text-secondary: #a5a2b3;
+    --text-tertiary: #726f80;
+
+    --accent: #8b7bfa;
+    --accent-hover: #a294fb;
+    --accent-soft: rgba(139, 123, 250, 0.12);
+    --accent-soft-text: #ab9ffb;
   }
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans), Arial, Helvetica, sans-serif;
+}
+
+@keyframes overlay-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes modal-in {
+  from {
+    opacity: 0;
+    transform: scale(0.97) translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.animate-overlay-in {
+  animation: overlay-in 0.18s ease-out;
+}
+
+.animate-modal-in {
+  animation: modal-in 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Thin custom scrollbar for the modal body, matching the surface palette */
+.custom-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-strong) transparent;
+}
+
+.custom-scroll::-webkit-scrollbar {
+  width: 8px;
+}
+
+.custom-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.custom-scroll::-webkit-scrollbar-thumb {
+  background-color: var(--border-strong);
+  border-radius: 9999px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+
+.custom-scroll::-webkit-scrollbar-thumb:hover {
+  background-color: var(--text-tertiary);
+  background-clip: padding-box;
+}
+
+/* Subtle accent-colored glow on textarea focus, replacing a plain border-color swap */
+.focus-glow:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-soft);
 }
