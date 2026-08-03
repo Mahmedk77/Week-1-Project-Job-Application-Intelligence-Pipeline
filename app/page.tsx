@@ -7,6 +7,7 @@ import {
   FileUser,
   Pencil,
   Sparkles,
+  Zap,
 } from "lucide-react";
 import { useRef, useState } from "react";
 import { AutoGrowTextarea } from "./components/AutoGrowTextarea";
@@ -190,52 +191,87 @@ export default function Home() {
         </header>
 
         <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
-          <label className="flex flex-col gap-2.5">
-            <span
-              className="flex items-center gap-1.5 text-sm font-medium"
-              style={{ color: "var(--text-primary)" }}
-            >
-              <Briefcase size={15} strokeWidth={1.75} />
-              Job description
-            </span>
+          <div
+            className="flex flex-col gap-3 rounded-2xl p-5"
+            style={{
+              background: "var(--surface-1)",
+              border: "1px solid var(--border-subtle)",
+            }}
+          >
+            <label className="flex flex-col gap-2">
+              <span
+                className="flex items-center gap-1.5 text-sm font-medium"
+                style={{ color: "var(--text-primary)" }}
+              >
+                <Briefcase size={15} strokeWidth={1.75} />
+                Job description
+              </span>
+              <p className="text-xs leading-relaxed" style={{ color: "var(--text-tertiary)" }}>
+                Paste the job posting text — role, required skills, salary, and
+                remote policy all get extracted automatically.
+              </p>
+            </label>
             <AutoGrowTextarea
               value={jobDescription}
               onChange={setJobDescription}
               placeholder="Drop in the role's job posting...."
             />
-          </label>
+          </div>
 
-          <label className="flex flex-col gap-2.5">
-            <span
-              className="flex items-center gap-1.5 text-sm font-medium"
-              style={{ color: "var(--text-primary)" }}
-            >
-              <FileUser size={15} strokeWidth={1.75} />
-              Resume
-            </span>
+          <div
+            className="flex flex-col gap-3 rounded-2xl p-5"
+            style={{
+              background: "var(--surface-1)",
+              border: "1px solid var(--border-subtle)",
+            }}
+          >
+            <label className="flex flex-col gap-2">
+              <span
+                className="flex items-center gap-1.5 text-sm font-medium"
+                style={{ color: "var(--text-primary)" }}
+              >
+                <FileUser size={15} strokeWidth={1.75} />
+                Resume
+              </span>
+              <p className="text-xs leading-relaxed" style={{ color: "var(--text-tertiary)" }}>
+                Paste the candidate&apos;s resume — skills, experience, and
+                education get matched against the role.
+              </p>
+            </label>
             <AutoGrowTextarea
               value={resumeText}
               onChange={setResumeText}
               placeholder="Paste in the candidate's resume...."
-
             />
-          </label>
+          </div>
         </div>
 
-        <div className="flex items-center gap-4">
+        <div className="flex w-full flex-col items-center gap-3">
           <button
             onClick={handleAnalyze}
             disabled={!canSubmit}
-            className="flex items-center gap-2 rounded-full px-7 py-3 text-sm font-medium text-white shadow-md transition-all disabled:cursor-not-allowed disabled:opacity-40"
+            className="flex w-full items-center justify-center gap-2 rounded-full px-8 py-3.5 text-sm font-semibold text-white shadow-md transition-all duration-200 disabled:cursor-not-allowed disabled:scale-100 disabled:opacity-40 cursor-pointer sm:w-auto"
             style={{
               background: canSubmit
                 ? "linear-gradient(135deg, var(--accent), var(--accent-hover))"
                 : "var(--text-tertiary)",
-              boxShadow: canSubmit ? "0 8px 24px -8px var(--accent)" : "none",
+              boxShadow: canSubmit ? "0 8px 28px -8px var(--accent)" : "none",
+            }}
+            onMouseEnter={(e) => {
+              if (!canSubmit) return;
+              e.currentTarget.style.filter = "brightness(0.92)";
+              e.currentTarget.style.boxShadow = "0 6px 20px -8px var(--accent)";
+              e.currentTarget.style.transform = "translateY(-1px)";
+            }}
+            onMouseLeave={(e) => {
+              if (!canSubmit) return;
+              e.currentTarget.style.filter = "none";
+              e.currentTarget.style.boxShadow = "0 8px 28px -8px var(--accent)";
+              e.currentTarget.style.transform = "translateY(0)";
             }}
           >
-            {loading ? <Spinner /> : <Sparkles size={16} strokeWidth={2} />}
-            {loading ? "Analyzing..." : "Analyze"}
+            {loading ? <Spinner /> : <Zap size={16} strokeWidth={2} fill="currentColor" />}
+            {loading ? "Analyzing..." : "Analyze application"}
           </button>
           {result && !modalOpen && (
             <button
@@ -264,7 +300,7 @@ export default function Home() {
 
       <Modal open={modalOpen} onClose={() => setModalOpen(false)}>
         <div className="flex flex-col gap-8 p-5 sm:gap-10 sm:p-10">
-          <div className="flex flex-col gap-1">
+          <div className="flex flex-col gap-1 pr-10 sm:pr-8">
             <span
               className="flex items-center gap-1.5 text-s font-semibold tracking-wide uppercase"
               style={{ color: "var(--accent-soft-text)" }}

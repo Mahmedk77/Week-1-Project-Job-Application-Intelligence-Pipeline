@@ -333,3 +333,127 @@ Match Score {
  GET / 200 in 410ms (next.js: 208ms, application-code: 202ms)
 ✓ Compiled in 92ms
  GET / 200 in 221ms (next.js: 156ms, application-code: 64ms)
+✓ Compiled in 157ms
+ GET / 200 in 415ms (next.js: 259ms, application-code: 155ms)
+ GET / 200 in 198ms (next.js: 7ms, application-code: 191ms)
+Job Parser:  {
+  role: 'Software Engineer',
+  company: 'Acme Corp',
+  requiredSkills: [ 'TypeScript', 'Node.js', 'PostgreSQL' ],
+  niceToHave: [ 'AWS', 'Docker' ],
+  salaryRange: '$110,000 - $140,000',
+  remotePolicy: 'remote'
+}
+Resume Parser:  {
+  skills: [ 'TypeScript', 'Node.js', 'React', 'Python' ],
+  experience: [
+    'Backend Engineer at Startup Inc (2021-2024), building REST APIs with Node.js and PostgreSQL'
+  ],
+  education: [ 'B.S. Computer Science, State University' ]
+}
+Match Score {
+  skillGapScore: {
+    score: 8,
+    reasoning: 'The candidate fully matches all required skills (TypeScript, Node.js, and experience with PostgreSQL), and has additional relevant skills like React and Python. However, they lack experience in the nice‑to‑have AWS and Docker, which slightly reduces suitability. Overall, they are a strong fit for the role.'
+  },
+  cultureFitScore: {
+    score: 9,
+    reasoning: 'The candidate meets all required skills (TypeScript, Node.js, PostgreSQL) and has relevant experience building REST APIs with those technologies. Additional skills such as React and Python provide extra versatility, although AWS and Docker are not listed. Overall fit with the role and company expectations is strong, warranting a high score.'
+  }
+}
+ POST /api/analyze 200 in 8.3s (next.js: 735ms, application-code: 7.5s)
+Job Parser:  {
+  role: 'Frontend Developer',
+  company: 'Nova Systems',
+  requiredSkills: [ 'React', 'TypeScript', 'CSS/Tailwind' ],
+  niceToHave: [ 'Next.js', 'GraphQL' ],
+  salaryRange: '$60,000-$85,000',
+  remotePolicy: 'hybrid'
+}
+Resume Parser:  {
+  skills: [ 'React', 'JavaScript', 'Tailwind CSS', 'Redux' ],
+  experience: [ 'Frontend Developer at PixelWorks 2021-2024' ],
+  education: [ 'BS Software Engineering, ABC University' ]
+}
+Match Score {
+  skillGapScore: {
+    score: 6,
+    reasoning: 'The candidate meets some key requirements: React and Tailwind CSS, aligning with the job’s React and CSS/Tailwind needs. However, they lack TypeScript, a mandatory skill, and do not demonstrate experience with Next.js or GraphQL, which are nice-to-haves. Overall, they fill many core requirements but miss a critical language and optional advanced technologies, indicating a moderate skill gap.'
+  },
+  cultureFitScore: {
+    score: 7,
+    reasoning: 'The candidate demonstrates strong alignment with the core requirements for a Frontend Developer at Nova Systems: they have proven experience with React and Tailwind CSS, which are part of the mandatory skill set. They lack TypeScript, which is also a required skill, but the absence of this language does not preclude a good fit, especially given their three years of front‑end development experience and solid JavaScript foundation. The candidate does not list Next.js or GraphQL—nice‑to‑have skills—but the absence of these does not significantly detract from overall fit. The candidate’s work history at a comparable firm and a BS in Software Engineering suggest a readiness for the hybrid remote policy and a professional culture that values continuous learning. Overall, the fit is solid with room for improvement in TypeScript proficiency. I rate the fit at 7 out of 10.'
+  }
+}
+ POST /api/analyze 200 in 5.1s (next.js: 9ms, application-code: 5.1s)
+ GET / 200 in 278ms (next.js: 13ms, application-code: 266ms)
+ GET / 200 in 132ms (next.js: 11ms, application-code: 121ms)
+ GET / 200 in 158ms (next.js: 11ms, application-code: 147ms)
+✓ Compiled in 107ms
+ GET / 200 in 283ms (next.js: 174ms, application-code: 109ms)
+✓ Compiled in 174ms
+ GET / 200 in 635ms (next.js: 373ms, application-code: 263ms)
+ GET / 200 in 147ms (next.js: 21ms, application-code: 125ms)
+ GET / 200 in 187ms (next.js: 8ms, application-code: 179ms)
+ GET / 200 in 70ms (next.js: 5ms, application-code: 65ms)
+Job Parser:  {
+  role: 'Software Engineer',
+  company: 'Acme Corp.',
+  requiredSkills: [ 'TypeScript', 'Node.js', 'PostgreSQL' ],
+  niceToHave: [ 'AWS', 'Docker' ],
+  salaryRange: '$110,000 - $140,000',
+  remotePolicy: 'remote'
+}
+Resume Parser:  {
+  skills: [ 'TypeScript', 'Node.js', 'React', 'Python' ],
+  experience: [
+    'Backend Engineer at Startup Inc (2021-2024), building REST APIs with Node.js and PostgreSQL.'
+  ],
+  education: [ 'B.S. Computer Science, State University.' ]
+}
+Match Score {
+  skillGapScore: {
+    score: 5,
+    reasoning: 'The candidate matches the core required skills (TypeScript, Node.js) but lacks PostgreSQL, which is a mandatory skill, and does not possess the nice-to-have skills (AWS, Docker). Therefore there is a moderate skill gap.'
+  },
+  cultureFitScore: {
+    score: 8,
+    reasoning: 'Candidate meets all required skills (TypeScript, Node.js, PostgreSQL) and has relevant backend experience. Lacks some nice-to-have skills but overall strong fit for the role.'
+  }
+}
+ POST /api/analyze 200 in 6.2s (next.js: 889ms, application-code: 5.3s)
+ GET / 200 in 137ms (next.js: 10ms, application-code: 127ms)
+Job Parser:  {
+  role: 'Frontend Developer',
+  company: 'Nova Systems',
+  requiredSkills: [ 'React', 'TypeScript', 'CSS/Tailwind' ],
+  niceToHave: [ 'Next.js', 'GraphQL' ],
+  salaryRange: '$60,000-$85,000',
+  remotePolicy: 'hybrid'
+}
+Resume Parser:  {
+  skills: [ 'React', 'JavaScript', 'Tailwind CSS', 'Redux' ],
+  experience: [ 'Frontend Developer at PixelWorks (2021-2024)' ],
+  education: [ 'BS Software Engineering, ABC University' ]
+}
+Match Score {
+  skillGapScore: {
+    score: 4,
+    reasoning: 'Candidate meets React and Tailwind CSS requirements but lacks TypeScript and the optional Next.js and GraphQL skills. This indicates a moderate skill gap, scoring 4/10.'
+  },
+  cultureFitScore: {
+    score: 7,
+    reasoning: 'The candidate has strong React and Tailwind experience which aligns well with the core requirements. However, they lack explicit TypeScript experience and have not listed Next.js or GraphQL, which are nice to have but not mandatory. Their recent 3-year experience as a Frontend Developer and a BS in Software Engineering suggest a solid foundation and potential to quickly adopt the missing skills. Overall fit is good but not perfect, hence a score of 7.'
+  }
+}
+ POST /api/analyze 200 in 5.2s (next.js: 10ms, application-code: 5.2s)
+✓ Compiled in 368ms
+ GET / 200 in 774ms (next.js: 478ms, application-code: 296ms)
+✓ Compiled in 102ms
+ GET / 200 in 484ms (next.js: 352ms, application-code: 133ms)
+✓ Compiled in 81ms
+ GET / 200 in 222ms (next.js: 155ms, application-code: 67ms)
+✓ Compiled in 143ms
+ GET / 200 in 484ms (next.js: 265ms, application-code: 219ms)
+✓ Compiled in 106ms
+ GET / 200 in 462ms (next.js: 277ms, application-code: 184ms)
