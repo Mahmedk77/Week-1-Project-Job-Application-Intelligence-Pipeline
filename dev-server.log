@@ -457,3 +457,56 @@ Match Score {
  GET / 200 in 484ms (next.js: 265ms, application-code: 219ms)
 ✓ Compiled in 106ms
  GET / 200 in 462ms (next.js: 277ms, application-code: 184ms)
+ GET / 200 in 168ms (next.js: 5ms, application-code: 163ms)
+ GET / 200 in 59ms (next.js: 5ms, application-code: 54ms)
+Job Parser:  {
+  role: 'Software Engineer',
+  company: 'Acme Corp.',
+  requiredSkills: [ 'TypeScript', 'Node.js', 'PostgreSQL' ],
+  niceToHave: [ 'AWS', 'Docker' ],
+  salaryRange: '$110,000 - $140,000',
+  remotePolicy: 'remote'
+}
+Resume Parser:  {
+  skills: [ 'TypeScript', 'Node.js', 'React', 'Python' ],
+  experience: [
+    'Backend Engineer at Startup Inc (2021-2024), building REST APIs with Node.js and PostgreSQL.'
+  ],
+  education: [ 'B.S. Computer Science, State University.' ]
+}
+Match Score {
+  skillGapScore: {
+    score: 9,
+    reasoning: 'Candidate meets all required skills (TypeScript, Node.js, PostgreSQL) and has relevant experience, but lacks the nice-to-have AWS and Docker skills.'
+  },
+  cultureFitScore: {
+    score: 9,
+    reasoning: 'Candidate meets all core requirements: TypeScript, Node.js, PostgreSQL expertise with relevant backend experience. Lacks only the optional AWS/Docker skills, and remote policy fit is implied. Overall fit is very strong.'
+  }
+}
+ POST /api/analyze 200 in 7.1s (next.js: 1196ms, application-code: 5.9s)
+ GET / 200 in 174ms (next.js: 11ms, application-code: 163ms)
+Job Parser:  {
+  role: 'Data Analyst',
+  company: 'Meridian Health',
+  requiredSkills: [ 'SQL', 'Python', 'Excel', 'Tableau or Power BI' ],
+  niceToHave: [ 'R', 'statistical modeling experience' ],
+  salaryRange: '$55,000-$70,000',
+  remotePolicy: 'onsite'
+}
+Resume Parser:  {
+  skills: [ 'SQL', 'Python', 'Excel', 'Power BI' ],
+  experience: [ 'Junior Data Analyst at Clearview Analytics (2022-2024)' ],
+  education: [ 'BS Statistics, Central State University' ]
+}
+Match Score {
+  skillGapScore: {
+    score: 9,
+    reasoning: 'Candidate possesses all required skills—SQL, Python, Excel, and Power BI (satisfying the Tableau/Power BI requirement). They also have relevant experience and a Statistics degree, resulting in a strong fit with only a minor gap in Tableau expertise.'
+  },
+  cultureFitScore: {
+    score: 8,
+    reasoning: "The candidate meets all core required skills (SQL, Python, Excel, Power BI) and has relevant recent experience as a Junior Data Analyst. They hold a BS in Statistics, which supports the statistical modeling requirement, and their skill set aligns well with the company's data analyst role, suggesting a strong cultural fit."
+  }
+}
+ POST /api/analyze 200 in 7.9s (next.js: 17ms, application-code: 7.9s)

@@ -206,10 +206,6 @@ export default function Home() {
                 <Briefcase size={15} strokeWidth={1.75} />
                 Job description
               </span>
-              <p className="text-xs leading-relaxed" style={{ color: "var(--text-tertiary)" }}>
-                Paste the job posting text — role, required skills, salary, and
-                remote policy all get extracted automatically.
-              </p>
             </label>
             <AutoGrowTextarea
               value={jobDescription}
@@ -233,10 +229,6 @@ export default function Home() {
                 <FileUser size={15} strokeWidth={1.75} />
                 Resume
               </span>
-              <p className="text-xs leading-relaxed" style={{ color: "var(--text-tertiary)" }}>
-                Paste the candidate&apos;s resume — skills, experience, and
-                education get matched against the role.
-              </p>
             </label>
             <AutoGrowTextarea
               value={resumeText}
